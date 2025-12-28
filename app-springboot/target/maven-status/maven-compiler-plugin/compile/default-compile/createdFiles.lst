@@ -1,0 +1,12 @@
+com\codeying\controller\AdmissionProjectController.class
+com\codeying\controller\StudentController.class
+com\codeying\controller\TestDataController.class
+com\codeying\entity\AdmissionProject.class
+com\codeying\mapper\AdmissionProjectMapper.class
+com\codeying\service\StudentService.class
+com\codeying\service\impl\StudentServiceImpl.class
+com\codeying\component\config\SecurityConfig.class
+com\codeying\service\impl\AdmissionProjectServiceImpl.class
+com\codeying\entity\Student.class
+com\codeying\service\AdmissionProjectService.class
+com\codeying\mapper\StudentMapper.class
