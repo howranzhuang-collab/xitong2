@@ -129,3 +129,107 @@
 编写 README.md
 包含简介、技术栈、启动步骤
 验证：内容清晰，按步骤可运行
+
+
+
+模块1：招生申请功能（推荐优先扩展）
+目标：学生登录后可提交申请（选择项目 + 上传材料）。
+
+添加申请表
+数据库创建 applications 表（id, student_id, project_id, apply_time, status, files_json）。
+生成 Entity、Mapper、Service。
+验证：表创建成功，代码编译通过。
+
+创建申请接口（后端）
+POST /api/application/submit（接收 projectId + 文件列表）。
+Service 层：校验登录、插入申请记录。
+验证：Postman 发送请求，数据库新增记录。
+
+前端创建申请页面
+新建 src/views/Application.vue（项目选择下拉 + 文件上传）。
+使用 Element Plus el-upload 组件。
+提交时调用后端接口。
+验证：登录后访问 /application，提交成功提示“申请已提交”。
+
+管理员查看申请列表
+GET /api/application/list（admin 角色）。
+前端新建 admin 视图显示表格。
+验证：admin 登录后看到申请记录。
+
+模块2：个人信息完善
+
+扩展 students 表
+添加字段：photo_path, phone, nationality, address 等。
+验证：数据库字段更新，Entity 同步。
+
+后端完善接口
+PUT /api/student/profile（更新个人信息 + 上传头像）。
+验证：Postman 更新成功，数据库变化。
+
+前端个人信息页面
+新建 src/views/Profile.vue（表单 + 头像上传）。
+加载当前用户信息，提交更新。
+验证：登录后访问 /profile，修改信息保存成功。
+
+模块3：模拟缴费
+
+添加费用表fees 表（id, student_id, fee_type, amount, due_date, status）。
+验证：表创建，插入测试数据。
+
+后端模拟支付接口
+POST /api/fee/pay/{feeId}（更新 status 为 paid）。
+返回“支付成功”模拟响应。
+验证：Postman 调用，数据库 status 更新。
+
+前端缴费页面
+新建 src/views/Pay.vue（显示欠费列表 + 模拟支付按钮）。
+点击支付调用后端接口，刷新列表。
+验证：页面显示欠费，点击支付后状态变为“已缴”。
+
+模块4：宿舍分配
+
+添加宿舍表dormitories（id, building, room_no, capacity, available）。
+dorm_assignments（id, student_id, dormitory_id, check_in_date）。
+验证：表创建，插入测试宿舍。
+后端分配接口
+POST /api/dorm/assign（接收 student_id + dorm_id）。
+更新 available 计数。
+验证：Postman 调用，床位减少。
+前端宿舍查询页面src/views/Dorm.vue（列表显示可用宿舍 + 申请按钮）。
+验证：登录后显示宿舍，申请成功更新状态。
+
+模块5：签证材料上传
+
+添加签证记录表visa_records（id, student_id, status, files_json）。
+验证：表创建。
+后端上传接口
+POST /api/visa/upload（多文件上传，存路径）。
+验证：Postman 上传文件，数据库记录路径。
+前端签证页面src/views/Visa.vue（上传 JW201/JW202 等材料）。
+验证：上传成功，页面显示“待审核”。
+
+模块6：学籍记录
+
+添加学籍表student_status（id, student_id, status, major, entry_date, graduate_date）。
+验证：表创建。
+后端学籍查询接口
+GET /api/student/status。
+验证：返回当前学籍信息。
+前端学籍页面src/views/Status.vue（显示入学日期、专业、状态）。
+验证：页面显示个人信息。
+
+模块7：校友登记
+
+添加 alumni 表alumni（id, student_id, graduate_year, company, email）。
+验证：表创建。
+后端登记接口
+POST /api/alumni/register（毕业生填写信息）。
+验证：Postman 插入成功。
+前端校友页面src/views/Alumni.vue（表单登记 + 查看校友列表）。
+验证：登记成功，列表显示。
+
+总体建议
+
+顺序：按上面 1→7 顺序扩展，每完成一个模块后测试完整流程。
+公共部分：每个模块完成后，更新路由（添加对应页面）、菜单导航。
+角色区分：简单用 Session 判断角色（student/admin），后期可扩展。
