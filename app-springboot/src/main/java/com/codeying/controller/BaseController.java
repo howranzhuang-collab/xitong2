@@ -1,6 +1,6 @@
 package com.codeying.controller;
 
-import com.codeying.component.ApiResult;
+import com.codeying.component.Result;
 import com.codeying.entity.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -41,16 +41,16 @@ public class BaseController {
     this.session.setAttribute(key, value);
   }
 
-  protected <T> ApiResult<T> success() {
-    return ApiResult.success();
+  protected <T> Result<T> success() {
+    return Result.success();
   }
 
-  protected <T> ApiResult<T> fail() {
-    return ApiResult.fail();
+  protected <T> Result<T> fail() {
+    return Result.fail("操作失败");
   }
 
-  protected <T> ApiResult<T> fail(String message) {
-    return ApiResult.fail(message);
+  protected <T> Result<T> fail(String message) {
+    return Result.fail(message);
   }
 
 }

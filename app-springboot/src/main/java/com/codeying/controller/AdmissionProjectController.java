@@ -3,7 +3,7 @@ package com.codeying.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.codeying.component.ApiResult;
+import com.codeying.component.Result;
 import com.codeying.entity.AdmissionProject;
 import com.codeying.service.AdmissionProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class AdmissionProjectController extends BaseController {
      * @return 项目列表
      */
     @GetMapping("list")
-    public ApiResult<IPage<AdmissionProject>> list(
+    public Result<IPage<AdmissionProject>> list(
             @RequestParam(defaultValue = "1") Integer pageIndex,
             @RequestParam(defaultValue = "10") Integer pageSize,
             String name) {
@@ -54,6 +54,6 @@ public class AdmissionProjectController extends BaseController {
         // 执行分页查询
         IPage<AdmissionProject> result = admissionProjectService.page(page, queryWrapper);
         
-        return ApiResult.successData(result);
+        return Result.success(result);
     }
 }

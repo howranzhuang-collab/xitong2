@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <title>学生中心</title>
+    <link rel="icon" href="/assets/images/favicon.ico" type="image/ico">
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/MaterialDesign-Webfont/5.9.55/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="/assets/css/style.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
+</head>
+
+<body data-theme="default">
+<div class="lyear-layout-web">
+    <div class="lyear-layout-container">
+
+        <!-- 页面头部 -->
+        <header class="lyear-layout-header">
+
+            <nav class="navbar navbar-default">
+                <div class="topbar">
+
+                    <div class="topbar-left">
+                        <div class="lyear-aside-toggler">
+                            <span class="lyear-toggler-bar"></span>
+                            <span class="lyear-toggler-bar"></span>
+                            <span class="lyear-toggler-bar"></span>
+                        </div>
+
+                    </div>
+
+                    <ul class="topbar-right">
+                        <li class="dropdown dropdown-profile">
+                            <a href="javascript:void(0)" data-toggle="dropdown">
+                                <img class="img-avatar img-avatar-48 m-r-10" src="/assets/images/avatar.jpg"/>
+                                <span th:text="${session.user.name}">学生用户</span><span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li><a href="/logout"><i class="mdi mdi-logout-variant"></i> 退出登录</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+
+                </div>
+            </nav>
+
+        </header>
+        <!-- 导航侧栏 -->
+        <aside class="lyear-layout-sidebar">
+
+            <div id="logo" class="sidebar-header">
+                <a href="/"><h3 style="height: 68px;line-height: 68px">来华留学生招生</h3></a>
+            </div>
+            <div class="lyear-layout-sidebar-scroll">
+                <nav class="sidebar-main">
+                    <ul class="nav nav-drawer">
+                        <li class="nav-item active"><a href="/student/index"><i
+                                class="mdi mdi-home"></i> 首页</a></li>
+                        <li class="nav-item"><a href="/student/project/list"><i
+                                class="mdi mdi-format-list-bulleted"></i> 招生项目</a></li>
+                        <li class="nav-item"><a href="/student/application/list"><i
+                                class="mdi mdi-history"></i> 我的申请</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+        </aside>
+
+        <!--页面主要内容-->
+        <main class="lyear-layout-content">
+            <div id="content-container" layout:fragment="content">
+
+            </div>
+        </main>
+        <!--End 页面主要内容-->
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.5/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="/assets/js/main.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // 同步服务端 Session 到 localStorage，确保 Vue 前端能获取到登录状态
+    try {
+        var user = /*[[${session.user}]]*/ null;
+        if (user) {
+            localStorage.setItem('user', JSON.stringify(user));
+        }
+    } catch (e) {
+        console.error('Sync user session failed:', e);
+    }
+    /*]]>*/
+</script>
+<th:block layout:fragment="js"></th:block>
+</body>
+</html>

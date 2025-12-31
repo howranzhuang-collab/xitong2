@@ -10,7 +10,7 @@ spring:
     password: root
   sql:
     init:
-      mode: always
+      mode: never
   mvc:
     static-path-pattern: /**
   web:

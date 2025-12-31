@@ -7,8 +7,8 @@
         </div>
       </template>
       <el-form :model="loginForm" label-width="80px">
-        <el-form-item label="邮箱">
-          <el-input v-model="loginForm.email" placeholder="请输入邮箱"></el-input>
+        <el-form-item label="用户名">
+          <el-input v-model="loginForm.username" placeholder="请输入用户名"></el-input>
         </el-form-item>
         <el-form-item label="密码">
           <el-input v-model="loginForm.password" type="password" placeholder="请输入密码"></el-input>
@@ -30,18 +30,18 @@ import { ElMessage } from 'element-plus'
 
 const router = useRouter()
 const loginForm = ref({
-  email: '',
+  username: '',
   password: ''
 })
 
 const handleLogin = async () => {
-  if (!loginForm.value.email || !loginForm.value.password) {
+  if (!loginForm.value.username || !loginForm.value.password) {
     ElMessage.warning('请填写完整信息')
     return
   }
   try {
     const formData = new FormData()
-    formData.append('email', loginForm.value.email)
+    formData.append('username', loginForm.value.username)
     formData.append('password', loginForm.value.password)
 
     const res = await axios.post('/api/student/login', formData)

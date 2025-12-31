@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>登录</title>
     <link rel="icon" href="/assets/images/favicon.ico" type="image/ico">
-    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/assets/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/MaterialDesign-Webfont/5.9.55/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="/assets/css/style.min.css" rel="stylesheet">
-    <script type="text/javascript" src="/assets/js/jquery.min.js"></script>
-    <script type="text/javascript" src="/assets/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style>
         .lyear-wrapper {
             position: relative;
@@ -58,7 +58,7 @@
 <div class="row lyear-wrapper">
     <div class="lyear-login">
         <div class="login-center">
-            <h2 style="width: 100%;text-align: center;text-shadow:2px 2px 5px white">springboot脚手架</h2>
+            <h2 style="width: 100%;text-align: center;text-shadow:2px 2px 5px white">来华留学生招生系统</h2>
             <form action="/login" method="post">
                 <div class="form-group has-feedback feedback-left">
                     <input maxlength="12" type="text" placeholder="请输入您的用户名" class="form-control" name="username" id="username" />
@@ -101,6 +101,19 @@
 </div>
 
 <script>
+    $(document).ready(function() {
+        // 清除旧的登录信息
+        localStorage.removeItem('user');
+        
+        // 绑定回车键
+        $('input').keypress(function (e) {
+            if (e.which == 13) {
+                submitLogin();
+                return false;
+            }
+        });
+    });
+
     function submitLogin() {
         var usertype = $('input[name="usertype"]:checked').val();
         var username = $('#username').val();
@@ -122,20 +135,22 @@
                 url: '/api/student/login',
                 type: 'POST',
                 data: {
-                    email: username, // Reusing username field for email
+                    username: username,
                     password: password
                 },
                 success: function(res) {
-                    if (res.success) {
-                        window.location.href = '/';
+                    if (res.code === 200) {
+                        // 存储用户信息到 localStorage，供 Vue 前端使用
+                        localStorage.setItem('user', JSON.stringify(res.data));
+                        window.location.href = '/student/index';
                     } else {
-                        alert(res.message || '登录失败');
+                        alert(res.msg || '登录失败');
                     }
                 },
                 error: function(xhr) {
                     var msg = '系统繁忙';
-                    if (xhr.responseJSON && xhr.responseJSON.message) {
-                        msg = xhr.responseJSON.message;
+                    if (xhr.responseJSON && xhr.responseJSON.msg) {
+                        msg = xhr.responseJSON.msg;
                     }
                     alert(msg);
                 }

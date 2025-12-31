@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
     <title>主页</title>
     <link rel="icon" href="/static/assets/images/favicon.ico" type="image/ico">
-    <link href="/static/assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/static/assets/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.9.55/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="/static/assets/css/style.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/static/assets/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
-    <script type="text/javascript" src="/static/assets/js/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/assets/js/jquery.form.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
 </head>
 
 <body data-theme="default">
@@ -70,6 +70,9 @@
                             <a href="javascript:void(0)"><i class="mdi mdi-format-align-justify"></i> 用户管理</a>
                             <ul class="nav nav-subnav" th:if="${ session.user.role == 'admin'  }">
                                 <li> <a th:href="${ '/admin/list'}">管理员</a> </li>
+                                <li> <a th:href="${ '/admin/project/list'}">招生项目</a> </li>
+                                <li> <a th:href="${ '/admin/student/list'}">学生管理</a> </li>
+                                <li> <a th:href="${ '/admin/application/list'}">申请记录</a> </li>
                             </ul>
                         </li>
 
@@ -91,8 +94,8 @@
 <script type="text/javascript" src="/assets/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/assets/js/perfect-scrollbar.min.js"></script>
 <script type="text/javascript" src="/assets/js/main.min.js"></script>
-<script src="/assets/js/bootstrap-datetimepicker/moment.min.js"></script>
-<script src="/assets/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 <script src="/assets/js/bootstrap-datetimepicker/locale/zh-cn.js"></script>
 </body>
 </html>

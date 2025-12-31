@@ -7,6 +7,9 @@
         </div>
       </template>
       <el-form :model="registerForm" label-width="80px">
+        <el-form-item label="用户名">
+          <el-input v-model="registerForm.username" placeholder="请输入用户名"></el-input>
+        </el-form-item>
         <el-form-item label="姓名">
           <el-input v-model="registerForm.name" placeholder="请输入姓名"></el-input>
         </el-form-item>
@@ -33,18 +36,20 @@ import { ElMessage } from 'element-plus'
 
 const router = useRouter()
 const registerForm = ref({
+  username: '',
   name: '',
   email: '',
   password: ''
 })
 
 const handleRegister = async () => {
-  if (!registerForm.value.name || !registerForm.value.email || !registerForm.value.password) {
+  if (!registerForm.value.username || !registerForm.value.name || !registerForm.value.email || !registerForm.value.password) {
     ElMessage.warning('请填写完整信息')
     return
   }
   try {
     const formData = new FormData()
+    formData.append('username', registerForm.value.username)
     formData.append('name', registerForm.value.name)
     formData.append('email', registerForm.value.email)
     formData.append('password', registerForm.value.password)

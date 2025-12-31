@@ -13,8 +13,8 @@
                     type: "GET",
                     url: "delete?id="+id,
                     success: function (data) {
-                        alert(data.message);
-                        if(data.success){
+                        alert(data.msg);
+                        if(data.code === 200){
                             location.href="list";
                         }
                     },

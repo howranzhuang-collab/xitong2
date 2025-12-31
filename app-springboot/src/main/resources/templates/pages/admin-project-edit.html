@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout">
+<head>
+    <meta charset="utf-8">
+    <title>编辑招生项目</title>
+</head>
+
+<body data-theme="default">
+<div layout:fragment="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header"><h4>编辑招生项目</h4></div>
+                    <div class="card-body">
+                        <form class="form-horizontal" action="/admin/project/save" method="post">
+                            <input type="hidden" name="id" th:value="${project?.id}">
+                            
+                            <div class="form-group">
+                                <label class="col-xs-12" for="name">项目名称</label>
+                                <div class="col-xs-12">
+                                    <input class="form-control" type="text" id="name" name="name" th:value="${project?.name}" required placeholder="请输入项目名称">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="col-xs-12" for="year">招生年份</label>
+                                <div class="col-xs-12">
+                                    <input class="form-control" type="number" id="year" name="year" th:value="${project?.year}" required placeholder="例如: 2025">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="col-xs-12" for="applyDeadline">申请截止日期</label>
+                                <div class="col-xs-12">
+                                    <input class="form-control js-datepicker" type="text" id="applyDeadline" name="applyDeadline" 
+                                           th:value="${#dates.format(project?.applyDeadline, 'yyyy-MM-dd')}" 
+                                           data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="col-xs-12" for="description">项目描述</label>
+                                <div class="col-xs-12">
+                                    <textarea class="form-control" id="description" name="description" rows="6" placeholder="请输入项目描述..." th:text="${project?.description}"></textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="col-xs-12">状态</label>
+                                <div class="col-xs-12">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="status" value="1" th:checked="${project?.status == null || project?.status == 1}"> 启用
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="status" value="0" th:checked="${project?.status == 0}"> 禁用
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <button class="btn btn-primary" type="submit">保存</button>
+                                    <a class="btn btn-default" href="/admin/project/list">返回</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

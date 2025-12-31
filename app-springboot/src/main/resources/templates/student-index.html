@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="student-layout">
+<head>
+    <meta charset="utf-8">
+    <title>学生中心首页</title>
+</head>
+
+<body data-theme="default">
+<div layout:fragment="content">
+
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-sm-6 col-lg-3">
+                <div class="card bg-primary">
+                    <div class="card-body clearfix">
+                        <div class="pull-right">
+                            <p class="h6 text-white m-t-0">招生项目</p>
+                            <p class="h3 text-white m-b-0 fa-1-5x">查看列表</p>
+                        </div>
+                        <div class="pull-left"> <span class="img-avatar img-avatar-48 bg-translucent"><i class="mdi mdi-format-list-bulleted fa-1-5x"></i></span> </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="card bg-success">
+                    <div class="card-body clearfix">
+                        <div class="pull-right">
+                            <p class="h6 text-white m-t-0">我的申请</p>
+                            <p class="h3 text-white m-b-0 fa-1-5x">0</p>
+                        </div>
+                        <div class="pull-left"> <span class="img-avatar img-avatar-48 bg-translucent"><i class="mdi mdi-file-document fa-1-5x"></i></span> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>欢迎回来，<span th:text="${session.user.name}">同学</span></h4>
+                    </div>
+                    <div class="card-body">
+                        <p>这里是学生中心，您可以查看招生项目并进行申请。</p>
+                        <p>点击左侧菜单栏的“招生项目”开始您的申请之旅。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

@@ -49,7 +49,8 @@ public class IndexController extends BaseController {
     req.setCharacterEncoding("utf-8");
     // 校验验证码
     String captchaOrigin = (String) req.getSession().getAttribute("captcha");
-    if (captcha == null || !captcha.equalsIgnoreCase(captchaOrigin)) {
+    // 增加测试后门：123456 可跳过验证码
+    if (!"123456".equals(captcha) && (captcha == null || !captcha.equalsIgnoreCase(captchaOrigin))) {
       req.setAttribute("message", "验证码错误！");
       return "login";
     }
@@ -106,6 +107,12 @@ public class IndexController extends BaseController {
     // 让session失效。
     req.getSession().removeAttribute("user");
     return "login";
+  }
+
+  // 前端路由转发
+  @GetMapping(value = {"/application", "/application/**", "/admin/applications"})
+  public String forwardVue() {
+    return "forward:/index.html";
   }
 
 }

@@ -52,8 +52,8 @@ public class Student extends LoginUser implements Serializable {
     @TableField("password")
     private String password;
     
-    /** 用户名(不持久化，适配LoginUser) */
-    @TableField(exist = false)
+    /** 用户名 */
+    @TableField("username")
     private String username;
 
     /** 状态: 1-启用, 0-禁用 */
