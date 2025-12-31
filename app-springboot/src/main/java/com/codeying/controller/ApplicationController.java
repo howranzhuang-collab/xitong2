@@ -64,32 +64,69 @@ public class ApplicationController extends BaseController {
     }
 
     /**
-     * 提交申请
+     * 提交申请 (统一接口：记录+文件)
      * POST /api/application/submit
-     * @param params 包含 projectId 和 documents (List<String>)
      */
     @PostMapping("/submit")
-    public Result<Object> submit(@RequestBody Map<String, Object> params) {
-        // 1. 获取当前登录用户
-        Object userObj = getSessionValue("user");
-        if (userObj == null || !(userObj instanceof Student)) {
+    public Result<Object> submit(
+            @RequestParam("projectId") String projectId,
+            @RequestParam(value = "files", required = false) org.springframework.web.multipart.MultipartFile[] files
+    ) {
+        // 1. 获取当前登录用户 (From SecurityContext)
+        Student student = null;
+        org.springframework.security.core.Authentication auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.getPrincipal() instanceof Student) {
+            student = (Student) auth.getPrincipal();
+        }
+        
+        // 兼容 Session 方式 (Double Check)
+        if (student == null) {
+            Object userObj = getSessionValue("user");
+            if (userObj instanceof Student) {
+                student = (Student) userObj;
+            }
+        }
+        
+        if (student == null) {
             return fail("请先登录学生账号");
         }
-        Student student = (Student) userObj;
 
-        // 2. 获取参数
-        String projectId = (String) params.get("projectId");
-        Object documentsObj = params.get("documents");
-        
         if (StringUtils.isEmpty(projectId)) {
             return fail("项目ID不能为空");
         }
         
-        String documentsStr = "";
-        if (documentsObj != null) {
-            // 简单处理，如果是List则转为字符串存储，实际可根据需求存JSON
-            documentsStr = documentsObj.toString(); 
+        // 2. 处理文件上传
+        List<String> documentPaths = new java.util.ArrayList<>();
+        if (files != null && files.length > 0) {
+            try {
+                // 物理存储路径：项目根目录/uploads/applications/
+                String projectRoot = System.getProperty("user.dir");
+                String uploadDir = projectRoot + "/uploads/applications/";
+                java.io.File dir = new java.io.File(uploadDir);
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+
+                for (org.springframework.web.multipart.MultipartFile file : files) {
+                    if (!file.isEmpty()) {
+                        String originalFilename = file.getOriginalFilename();
+                        String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
+                        String newFileName = com.codeying.utils.CommonUtils.newId() + suffix;
+                        
+                        java.io.File dest = new java.io.File(uploadDir + newFileName);
+                        file.transferTo(dest);
+                        
+                        // 记录相对路径 (需配合 WebConfig 资源映射)
+                        documentPaths.add("/uploads/applications/" + newFileName);
+                    }
+                }
+            } catch (java.io.IOException e) {
+                e.printStackTrace();
+                return fail("文件上传失败: " + e.getMessage());
+            }
         }
+
+        String documentsStr = documentPaths.toString(); // e.g., ["/uploads/...", "/uploads/..."]
 
         try {
             boolean success = applicationService.submitApplication(student.getId(), projectId, documentsStr);

@@ -31,9 +31,9 @@ public class Application implements Serializable {
     @TableField("project_id")
     private String projectId;
 
-    /** 状态: 0-待审核, 1-通过, 2-拒绝 */
+    /** 状态: pending-待审核, approved-通过, rejected-拒绝 */
     @TableField("status")
-    private Integer status;
+    private String status;
 
     /** 申请材料(JSON格式) */
     @TableField("documents")

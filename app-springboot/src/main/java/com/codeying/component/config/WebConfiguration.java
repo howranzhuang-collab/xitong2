@@ -46,6 +46,17 @@ public class WebConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/hello","/admin/**");//需要拦截的页面
     }
+    
+    /**
+     * 静态资源映射
+     */
+    @Override
+    public void addResourceHandlers(org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry registry) {
+        // 映射本地 uploads 目录
+        String projectRoot = System.getProperty("user.dir");
+        registry.addResourceHandler("/uploads/**")
+                .addResourceLocations("file:" + projectRoot + "/uploads/");
+    }
 
     /**
      * 将验证码添加到配置

@@ -21,14 +21,16 @@
         <el-form-item label="申请材料" prop="documents">
           <el-upload
             class="upload-demo"
-            action="/api/common/upload"
-            :on-success="handleUploadSuccess"
+            action="#"
+            :auto-upload="false"
+            :on-change="handleChange"
             :on-remove="handleRemove"
             :file-list="fileList"
+            multiple
             list-type="text">
-            <el-button size="small" type="primary">点击上传</el-button>
+            <el-button size="small" type="primary">选择文件</el-button>
             <template #tip>
-              <div class="el-upload__tip">只能上传jpg/png/pdf文件，且不超过5MB</div>
+              <div class="el-upload__tip">支持jpg/png/pdf文件，提交申请时自动上传</div>
             </template>
           </el-upload>
         </el-form-item>
@@ -55,30 +57,24 @@ const projectList = ref([])
 const fileList = ref([])
 
 const form = reactive({
-  projectId: '',
-  documents: []
+  projectId: ''
 })
 
 const rules = {
   projectId: [
     { required: true, message: '请选择招生项目', trigger: 'change' }
-  ],
-  documents: [
-    { required: true, message: '请至少上传一份申请材料', trigger: 'change', type: 'array' }
   ]
 }
 
 const getProjectList = async () => {
+  // ... (Keep existing logic)
   try {
     const res = await axios.get('/api/project/list', {
       params: { pageIndex: 1, pageSize: 100 }
     })
     if (res.data.code === 200) {
       projectList.value = res.data.data.records
-      
-      // 如果 URL 中有 projectId 参数，自动选中
       if (route.query.projectId) {
-        // 确保 projectId 存在于列表中
         const exists = projectList.value.some(p => p.id === route.query.projectId)
         if (exists) {
           form.projectId = route.query.projectId
@@ -90,25 +86,12 @@ const getProjectList = async () => {
   }
 }
 
-const handleUploadSuccess = (response, file, fileList) => {
-  if (response.code === 200) {
-    form.documents.push(response.data.url)
-    ElMessage.success('上传成功')
-  } else {
-    ElMessage.error(response.msg || '上传失败')
-  }
+const handleChange = (file, fileListRef) => {
+  fileList.value = fileListRef
 }
 
-const handleRemove = (file, fileList) => {
-  // 简单处理：如果是刚刚上传的，从 form.documents 移除
-  // 这里需要根据 response 里的 url 来匹配，实际 fileList 里的 file 对象包含 response
-  if (file.response && file.response.code === 200) {
-    const url = file.response.data.url
-    const index = form.documents.indexOf(url)
-    if (index > -1) {
-      form.documents.splice(index, 1)
-    }
-  }
+const handleRemove = (file, fileListRef) => {
+  fileList.value = fileListRef
 }
 
 const submitForm = async () => {
@@ -116,10 +99,19 @@ const submitForm = async () => {
   await formRef.value.validate(async (valid) => {
     if (valid) {
       try {
-        const res = await axios.post('/api/application/submit', {
-          projectId: form.projectId,
-          documents: form.documents
+        const formData = new FormData()
+        formData.append('projectId', form.projectId)
+        
+        // Append files
+        fileList.value.forEach(item => {
+           // el-upload raw file is in item.raw
+           formData.append('files', item.raw)
         })
+
+        const res = await axios.post('/api/application/submit', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        })
+        
         if (res.data.code === 200) {
           ElMessage.success('申请已提交')
           setTimeout(() => {
@@ -137,7 +129,6 @@ const submitForm = async () => {
 }
 
 onMounted(() => {
-  // 检查登录
   const user = localStorage.getItem('user')
   if (!user) {
     window.location.href = '/login'

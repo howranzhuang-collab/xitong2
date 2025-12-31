@@ -18,7 +18,7 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
 
     @Override
     public boolean submitApplication(String studentId, String projectId, String documents) {
-        // 校验是否已经申请过该项目
+        // 校验是否已经申请过该项目 (DB也有唯一索引作为兜底)
         QueryWrapper<Application> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("student_id", studentId);
         queryWrapper.eq("project_id", projectId);
@@ -31,7 +31,7 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
         application.setStudentId(studentId);
         application.setProjectId(projectId);
         application.setDocuments(documents);
-        application.setStatus(0); // 默认待审核
+        application.setStatus("pending"); // 默认待审核
         application.setCreateTime(new Date());
         application.setUpdateTime(new Date());
 

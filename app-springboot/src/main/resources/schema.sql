@@ -45,9 +45,10 @@ CREATE TABLE IF NOT EXISTS applications (
     id VARCHAR(32) NOT NULL COMMENT '主键ID',
     student_id VARCHAR(32) NOT NULL COMMENT '学生ID',
     project_id VARCHAR(32) NOT NULL COMMENT '项目ID',
-    status INT DEFAULT 0 COMMENT '状态: 0-待审核, 1-通过, 2-拒绝',
+    status VARCHAR(20) DEFAULT 'pending' COMMENT '状态: pending-待审核, approved-通过, rejected-拒绝',
     documents TEXT COMMENT '申请材料(JSON格式)',
     create_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_student_project (student_id, project_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='申请记录表';
